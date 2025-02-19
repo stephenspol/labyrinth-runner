@@ -1,33 +1,26 @@
 class Player {
 	constructor(x, y) {
-		this.pos = createVector(x, y);
-		this.vel = createVector(0, 0);
-		this.acc = createVector(0, 0);
 		this.width = 25;
 		this.height = 25;
-
-		this.friction = 0.92;
+		this.body = Matter.Bodies.rectangle(x, y, this.width, this.height, {friction: 0.92, restitution: 0.8});
 	}
 
-	display() {
-		fill(255, 0, 0);
+	show() {
+		push();
 		noStroke();
-		rect(this.pos.x, this.pos.y, this.width, this.height);
-	}
-
-	update() {
-		this.vel.add(this.acc);
-		this.pos.add(this.vel);
-
-		this.acc.mult(0);
-		this.vel.mult(this.friction);
+		fill(255, 0, 0);
+		translate(this.body.position.x, this.body.position.y);
+		rotate(this.body.angle);
+		rectMode(CENTER);
+		rect(0, 0, this.width, this.height);
+		pop();		
 	}
 
 	applyForce(force) {
-		this.acc.add(force);
+		Matter.Body.applyForce(this.body, this.body.position, force);
 	}
 
 	setPos(x, y) {
-		this.pos.set(x, y)
+		Matter.Body.setPosition(this.body, {x: x, y: y});
 	}
 }
