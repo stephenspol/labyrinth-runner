@@ -2,55 +2,34 @@ class Room {
 	constructor(x, y, width, height) {
 		this.x = x;
 		this.y = y;
-		this.outerVertices = this._createOuterVertices(x, y, width, height);
-		this.innerVertices = this._createInnerVertices(x, y, width, height, 10).reverse();
-		this.outerBody = Matter.Bodies.fromVertices(0, 0, this.outerVertices, {isStatic: true});
-		this.innerBody = Matter.Bodies.fromVertices(0, 0, this.innerVertices, {isStatic: true});
-		this.composite = Matter.Composite.create({bodies: [this.outerBody, this.innerBody], isStatic: true});
 		this.height = height;
 		this.width = width;
 
-		Matter.Composite.translate(this.composite, {x: this.height, y: this.width})
+		this.walls = this._createWalls(10);
+		this.composite = Matter.Composite.create();
+		Matter.Composite.add(this.composite, this.walls.map(wall => wall.body));
+		Matter.Composite.translate(this.composite, {x: this.x, y: this.y})
 	}
 
 	show() {
-		beginShape();
-
-		for (const point of this.outerVertices) {
-			vertex(point.x, point.y);
+		for (const wall of this.walls) {
+			wall.show();
 		}
-
-		beginContour();
-		for (const point of this.innerVertices) {
-			vertex(point.x, point.y);
-		}
-		endContour();
-
-		endShape(CLOSE);
 	}
 
 	placeEntityInRoom(entity) {
-		const randomX = random(this.x + entity.width/2, this.x + this.width - entity.width/2);
-		const randomY = random(this.y + entity.height/2, this.y + this.height - entity.height/2);
+		const randomX = random(this.x + entity.width, this.x + this.width - entity.width);
+		const randomY = random(this.y + entity.height, this.y + this.height - entity.height);
 
 		entity.setPos(randomX, randomY);
 	}
 
-	_createOuterVertices(x, y, width, height) {
-		return [
-			{x: x, y: y},
-			{x: x + width, y: y},
-			{x: x + width, y: y + height},
-			{x: x, y: y + height}
-		]
-	}
+	_createWalls(thickness) {
+		const topEdge = new Wall(this.x, this.y - this.height / 2, this.width, thickness);
+		const rightEdge = new Wall(this.x + this.width / 2, this.y, thickness, this.height);
+		const bottomEdge = new Wall(this.x, this.y + this.height / 2, this.width, thickness);
+		const leftEdge = new Wall(this.x - this.width / 2, this.y, thickness, this.height);
 
-	_createInnerVertices(x, y, width, height, thickness) {
-		return [
-			{x: x + thickness, y: y + thickness},
-			{x: x + width - thickness, y: y + thickness},
-			{x: x + width - thickness, y: y + height - thickness},
-			{x: x + thickness, y: y + height - thickness}
-		]
+		return [topEdge, rightEdge, bottomEdge, leftEdge]
 	}
 }

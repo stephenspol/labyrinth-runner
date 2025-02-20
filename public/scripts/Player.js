@@ -13,7 +13,7 @@ class Player {
 		rotate(this.body.angle);
 		rectMode(CENTER);
 		rect(0, 0, this.width, this.height);
-		pop();		
+		pop();
 	}
 
 	applyForce(force) {
