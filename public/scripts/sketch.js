@@ -33,6 +33,8 @@ function setup() {
 function draw() {
     background(220);
 
+    player.focus();
+
     room.show();
     player.show();
 }
@@ -41,7 +43,7 @@ function keyPressed() {
     if (keyCode === UP_ARROW) {
         playerMovement = Matter.Vector.add(playerMovement, {x: 0, y: -0.0001});
     } else if (keyCode === DOWN_ARROW) {
-        playerMovement =Matter.Vector.add(playerMovement, {x: 0, y: 0.0001});
+        playerMovement = Matter.Vector.add(playerMovement, {x: 0, y: 0.0001});
     } else if (keyCode === RIGHT_ARROW) {
         playerMovement = Matter.Vector.add(playerMovement, {x: 0.0001, y: 0});
     } else if (keyCode === LEFT_ARROW) {

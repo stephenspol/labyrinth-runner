@@ -23,4 +23,8 @@ class Player {
 	setPos(x, y) {
 		Matter.Body.setPosition(this.body, {x: x, y: y});
 	}
+
+	focus() {
+		translate(width / 2 - this.body.position.x, height / 2 - this.body.position.y);
+	}
 }
