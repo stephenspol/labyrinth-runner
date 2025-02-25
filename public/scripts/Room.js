@@ -8,7 +8,7 @@ class Room {
 		this.walls = this._createWalls(10);
 		this.composite = Matter.Composite.create();
 		Matter.Composite.add(this.composite, this.walls.map(wall => wall.body));
-		Matter.Composite.translate(this.composite, {x: this.x, y: this.y})
+		Matter.Composite.translate(this.composite, {x: this.x, y: this.y});
 	}
 
 	show() {

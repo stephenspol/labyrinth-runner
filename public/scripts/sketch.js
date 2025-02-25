@@ -3,6 +3,7 @@ let engine;
 let world;
 
 let room;
+let maze;
 let player;
 let playerMovement;
 
@@ -10,7 +11,8 @@ function setup() {
     playerMovement = Matter.Vector.create(0, 0);
 
     room = new Room(200, 200, 400, 400);
-    player = new Player(0, 0);
+    maze = new Maze(-300, -300, 500, 500);
+    player = new Player(200, 200);
 
     createCanvas(800, 800);
 
@@ -20,9 +22,10 @@ function setup() {
 
     Matter.Runner.run(runner, engine);
     Matter.Composite.add(world, room.composite);
+    Matter.Composite.add(world, maze.composite);
     Matter.Composite.add(world, player.body);
 
-    room.placeEntityInRoom(player);
+    //room.placeEntityInRoom(player);
 
     Matter.Events.on(engine, "beforeUpdate", event => {
         player.applyForce(playerMovement);
@@ -36,6 +39,7 @@ function draw() {
     player.focus();
 
     room.show();
+    maze.show();
     player.show();
 }
 
